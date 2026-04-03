@@ -1,233 +1,213 @@
-🚀 TaskMind AI – Smart Action & Decision Intelligence Platform
-Turn messages, announcements, and emails into clear actions, deadlines, and decisions
-🌐 SEO-Optimized Product Positioning
+You are a senior DevOps engineer. Your task is to Dockerize an existing Next.js application that is already running locally in the current directory.
 
-Primary Title (SEO Strong):
-TaskMind AI – Convert Messages, Emails, and Announcements into Actionable Tasks Instantly
+## 🎯 Objective
 
-Alternative Titles:
+Transform the current Next.js project into a fully Dockerized application that supports:
 
-AI Task Extractor for Emails & Announcements
-Smart Action Extractor with Deadline & Urgency Detection
-AI Productivity Tool for Message-to-Task Conversion
+* Local development (optional but preferred)
+* Production build and deployment
+* Clean, optimized Docker image
+* Future scalability (database, Redis, etc.)
 
-Primary Keywords:
+The system must work with Docker version 29.3.0.
 
-AI task extractor
-convert message to tasks
-email to action items
-announcement analyzer AI
-deadline extractor tool
-productivity AI assistant
+---
 
-Meta Description (SEO Ready):
-TaskMind AI is a modern AI-powered web app that converts emails, messages, and announcements into clear action items, deadlines, and priorities using privacy-first browser-based AI.
+## 📦 Project Context
 
-📌 1. Project Overview
+* The project is already a working Next.js app
+* It uses npm (detect if yarn/pnpm is used and adjust)
+* The app runs locally using `npm run dev` or `npm run build && npm start`
+* No Docker setup exists yet
 
-TaskMind AI is an advanced web application that helps users instantly understand what needs to be done from any type of text input.
+---
 
-Unlike traditional AI tools, it focuses on:
+## 🧠 Tasks to Perform
 
-Action clarity
-Decision support
-Task prioritization
-Real-world usability
+### 1. Analyze the project
 
-It is designed to be:
+* Detect:
 
-⚡ Fast
-🔒 Privacy-focused (client-side AI)
-🎯 Highly practical
-🎯 2. Core Objective
+  * Package manager (npm, yarn, pnpm)
+  * Presence of `.env` or `.env.local`
+  * Next.js version (App Router or Pages Router)
+  * Build/start scripts in `package.json`
+* Ensure compatibility with Node 18+ (prefer `node:18-alpine` or newer stable)
 
-To eliminate confusion from real-world communication and transform it into:
+---
 
-Clear tasks
-Defined deadlines
-Actionable next steps
-🧠 3. Key Concept
+### 2. Create a production-ready Dockerfile (MANDATORY)
 
-“If you read something and don’t know what to do next — TaskMind AI solves that.”
+Requirements:
 
-🎨 4. UI/UX Design Requirements (VERY IMPORTANT)
+* Use multi-stage build for optimization
+* Minimize final image size
+* Follow best practices for Next.js production
 
-The system must follow a modernistic design standard:
+Steps:
 
-Design Principles:
-Minimalist but powerful UI
-Glassmorphism + soft shadows
-Smooth micro-interactions
-Clean typography (Inter / Poppins)
-Dark mode by default
-Fully responsive (mobile-first)
-Required UI Enhancements:
-Animated transitions (Framer Motion)
-Skeleton loaders for AI processing
-Interactive cards (hover effects)
-Real-time typing effect for AI output
-Color-coded urgency indicators
-⚙️ 5. Tech Stack (Modern & Scalable)
-Frontend:
-Next.js 14+ (App Router)
-TypeScript
-Tailwind CSS
-UI & Animation:
-shadcn/ui
-Framer Motion
-Lucide Icons
-AI Layer:
-Web LLM (@mlc-ai/web-llm)
-Model options:
-LLaMA
-Mistral
-State Management:
-Zustand (lightweight and fast)
-Optional Backend:
-Node.js (API routes)
-Edge functions (Vercel)
-Database (Optional but Recommended):
-Turso (SQLite edge database)
-Additional Tools:
-React Hook Form (forms)
-Zod (validation)
-React Query (data fetching)
-date-fns (date parsing)
-✨ 6. Core Features (Expanded & Enhanced)
-🧠 6.1 Smart Action Extraction
-Detects tasks from text
-Converts into checklist format
-Allows user editing
-📅 6.2 Intelligent Deadline Detection
-Converts vague time into exact date/time
-Adds countdown timers
-🔴 6.3 AI Urgency Scoring System
-Dynamic urgency calculation
-Visual indicators + badges
-⚠️ 6.4 Confusion Detection Engine
-Highlights unclear instructions
-Suggests clarification questions
-📝 6.5 One-Click Next Step Generator
-AI suggests most important action
-🌐 6.6 Multi-Language Engine
-English ↔ Filipino (default)
-Expandable
-🚀 7. ADVANCED FEATURES (This is what makes it powerful)
-📂 7.1 File Upload Analyzer
+* Stage 1 (builder):
 
-Users can upload:
+  * Install dependencies
+  * Copy project files
+  * Run `npm run build`
+* Stage 2 (runner):
 
-PDF
-DOCX
-TXT
-Screenshots (future OCR)
-📬 7.2 Email & Message Analyzer
-Paste email content
-Auto-detect sender intent
-📊 7.3 Task Dashboard (IMPORTANT)
-View all extracted tasks
-Filter by:
-Urgency
-Deadline
-Status
-🧾 7.4 History & Saved Analysis
-Save previous results
-Re-analyze anytime
-📤 7.5 Export System
-JSON
-PDF
-CSV
-Markdown
-🔔 7.6 Smart Reminder System (Optional)
-Notify user of deadlines
-Integration-ready (email or push)
-🧠 7.7 AI Learning Mode (Advanced)
-Improves extraction based on user edits
-🔍 7.8 Search & Filter Engine
-Search past messages
-Filter by keyword or urgency
-🧩 7.9 Browser-Based AI (Privacy Mode)
-No server needed
-Offline-capable (after model load)
-🧪 8. User Flow
-User inputs:
-Message / Email / Announcement / File
-AI processes text locally
-Output generated:
-Actions
-Deadlines
-Urgency
-Confusion
-Summary
-User can:
-Edit tasks
-Save results
-Export data
-📁 9. Suggested Project Structure
-/app
-  /dashboard
-  /analyze
-  /upload
-  /history
+  * Copy only necessary build files
+  * Use non-root user if possible
+  * Expose port 3000
+  * Run `npm start`
 
-/components
-  ActionList.tsx
-  DeadlineCard.tsx
-  UrgencyBadge.tsx
-  ConfusionBox.tsx
+Ensure:
 
-/lib
-  ai-engine.ts
-  parser.ts
+* `.next`, `node_modules`, and build output handled correctly
+* Avoid unnecessary files in final image
 
-/store
-  useTaskStore.ts
+---
 
-/utils
-  dateParser.ts
-  textCleaner.ts
-📈 10. Performance Targets
-AI response: 2–3 seconds
-Smooth UI animations
-Handles up to 5000+ characters
-🔒 11. Security & Privacy
-Fully client-side AI (default)
-No data leakage
-Optional encrypted storage
-🧑‍💻 12. Target Users
-🎓 Students
-School announcements
-Assignments
-💼 Professionals
-Emails
-Meetings
-🏠 General Users
-Bills
-Government notices
-🔥 13. What Makes This Project Strong
-Real-world problem solving
-Unique AI use-case (not generic chatbot)
-Portfolio-level impact
-Can scale into SaaS product
-🧭 14. Future Enhancements
-OCR for images
-Voice input (speech-to-text)
-Calendar integration
-Mobile app version
-AI chatbot assistant mode
-💬 Final Direction
+### 3. Create `.dockerignore` (MANDATORY)
 
-This project should be built as:
+Exclude:
 
-Modern
-Highly interactive
-Fully functional (not just UI)
-Feature-rich
-Production-ready quality
+* node_modules
+* .next
+* .git
+* Dockerfile
+* docker-compose.yml
+* logs
+* environment files if needed
 
-Note! i have already an fresh nextjs and tailwindcss installed all you need to do is to apply this todo.
+---
 
-step: 
- Create AI prompt engineering logic (VERY important)
- Build Turso database schema + seeders (add also a default turso credentials in .env)
- 
+### 4. Add docker-compose setup (IMPORTANT)
+
+Create `docker-compose.yml` that:
+
+* Runs the Next.js app
+* Maps port 3000:3000
+* Supports environment variables
+* Allows easy scaling later
+
+Optional (if detected or needed):
+
+* Add database service (PostgreSQL or MySQL)
+* Add Redis service if caching/session is used
+
+---
+
+### 5. Environment variables handling
+
+* Detect `.env.local` or `.env`
+* Ensure Docker supports environment variables securely
+* Use `.env` file in docker-compose
+* Do NOT hardcode secrets in Dockerfile
+
+---
+
+### 6. Optimize for production
+
+* Use `NODE_ENV=production`
+* Disable dev dependencies in final image
+* Ensure fast startup
+* Keep image lightweight
+
+---
+
+### 7. Add scripts to package.json (if needed)
+
+Ensure:
+
+* `"build"` exists → `next build`
+* `"start"` exists → `next start`
+* `"dev"` exists → `next dev`
+
+---
+
+### 8. Provide commands to run
+
+The setup must support:
+
+Build image:
+
+```
+docker build -t nextjs-app .
+```
+
+Run container:
+
+```
+docker run -p 3000:3000 nextjs-app
+```
+
+OR using docker-compose:
+
+```
+docker-compose up --build
+```
+
+---
+
+### 9. Validate setup
+
+Ensure:
+
+* App runs on http://localhost:3000
+* No missing dependencies
+* No build errors
+* Works exactly like local environment
+
+---
+
+### 10. Optional (ADVANCED but recommended)
+
+If applicable:
+
+* Enable hot reload in development mode using volumes
+* Add separate dev and prod Docker configs
+* Prepare for deployment (VPS, cloud, etc.)
+
+---
+
+## 🚀 Output Requirements
+
+You MUST generate:
+
+1. Dockerfile (multi-stage, production-ready)
+2. .dockerignore
+3. docker-compose.yml
+4. Any required modifications to package.json
+5. Clear instructions to run the container
+
+Ensure:
+
+* No errors
+* Clean and professional structure
+* Follows modern DevOps best practices
+
+---
+
+## ⚠️ Important Constraints
+
+* Do NOT break existing Next.js functionality
+* Do NOT assume unnecessary dependencies
+* Keep setup minimal but scalable
+* Ensure compatibility with Docker 29.3.0
+* Avoid overengineering
+
+---
+
+## ✅ Final Goal
+
+After execution, the developer should be able to run:
+
+```
+docker-compose up --build
+```
+
+And access the app at:
+
+```
+http://localhost:3000
+```
+
+with the same behavior as the original Next.js project.
