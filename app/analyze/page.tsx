@@ -27,6 +27,24 @@ export default function AnalyzePage() {
       return;
     }
 
+    const trimmed = inputText.trim();
+    
+    if (trimmed.length < 10) {
+      setError('Please enter more text (at least 10 characters)');
+      return;
+    }
+
+    if (trimmed.length > 50000) {
+      setError('Text is too long. Please limit to 50,000 characters for optimal performance.');
+      return;
+    }
+
+    const wordCount = trimmed.split(/\s+/).filter(Boolean).length;
+    if (wordCount < 3) {
+      setError('Please enter more meaningful text (at least 3 words)');
+      return;
+    }
+
     setIsProcessing(true);
     setError(null);
 
@@ -34,8 +52,14 @@ export default function AnalyzePage() {
       // Clean the input text
       const cleaned = cleanText(inputText);
       
-      if (cleaned.isTooShort) {
+      if (cleaned.isTooShort || cleaned.cleaned.length < 10) {
         setError('Please enter more text (at least 10 characters)');
+        setIsProcessing(false);
+        return;
+      }
+
+      if (cleaned.cleaned.length > 50000) {
+        setError('Text is too long after processing. Please reduce the input.');
         setIsProcessing(false);
         return;
       }

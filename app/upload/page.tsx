@@ -49,8 +49,19 @@ export default function UploadPage() {
     try {
       setIsUploading(true);
       
-      if (file.type === 'application/pdf') {
-        setError('PDF parsing requires additional setup. Please use TXT files for now.');
+      const isPDF = file.type === 'application/pdf' || file.name.endsWith('.pdf');
+      const isDOCX = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || 
+                      file.name.endsWith('.docx');
+      const isDOC = file.type === 'application/msword' || file.name.endsWith('.doc');
+      
+      if (isPDF) {
+        setError('PDF parsing is coming soon. For now, please convert your PDF to text or use a TXT file.');
+        setIsUploading(false);
+        return;
+      }
+      
+      if (isDOCX || isDOC) {
+        setError('DOC/DOCX parsing is coming soon. For now, please use a TXT file or copy-paste the content.');
         setIsUploading(false);
         return;
       }

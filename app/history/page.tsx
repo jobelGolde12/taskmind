@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, Trash2, Eye, Download, Calendar, X } from 'lucide-react';
+import { Search, Filter, Trash2, Eye, Download, Calendar, X, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/useAppStore';
@@ -10,10 +10,11 @@ import { format as formatDate } from 'date-fns';
 import { UrgencyBadge } from '@/components/analysis/UrgencyBadge';
 
 export default function HistoryPage() {
-  const { analyses, deleteAnalysis, setCurrentAnalysis } = useAppStore();
+  const { analyses, deleteAnalysis, clearAllAnalyses, setCurrentAnalysis } = useAppStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterUrgency, setFilterUrgency] = useState<string | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] = useState<string | null>(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Filter analyses
   const filteredAnalyses = analyses.filter((analysis) => {
@@ -101,9 +102,22 @@ export default function HistoryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold">History</h1>
-        <p className="text-muted-foreground">View and manage your past analyses</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">History</h1>
+          <p className="text-muted-foreground">View and manage your past analyses</p>
+        </div>
+        {analyses.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowClearConfirm(true)}
+            className="text-red-400 hover:bg-red-500/20 hover:text-red-300"
+          >
+            <Trash2 className="mr-2 h-3.5 w-3.5" />
+            Clear All
+          </Button>
+        )}
       </div>
 
       {/* Filters */}
@@ -278,27 +292,198 @@ export default function HistoryPage() {
       )}
 
       {/* Selected Analysis Detail */}
-      {selectedAnalysis && (
+      {selectedAnalysis && (() => {
+        const analysis = analyses.find((a) => a.id === selectedAnalysis);
+        if (!analysis) return null;
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="max-h-[90vh] w-full max-w-3xl overflow-auto rounded-xl border border-white/10 bg-background"
+            >
+              <div className="sticky top-0 flex items-center justify-between border-b border-white/10 bg-background/80 backdrop-blur-sm p-4">
+                <div>
+                  <h2 className="text-xl font-bold">Analysis Details</h2>
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(new Date(analysis.createdAt), 'PPP p')}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedAnalysis(null)}
+                  className="rounded p-1.5 text-muted-foreground hover:bg-white/10"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="space-y-6 p-6">
+                {/* Summary */}
+                <div>
+                  <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Summary</h3>
+                  <p className="text-sm">{analysis.summary}</p>
+                </div>
+
+                {/* Original Text */}
+                <div>
+                  <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Original Text</h3>
+                  <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+                    <p className="text-sm whitespace-pre-wrap">{analysis.originalText}</p>
+                  </div>
+                </div>
+
+                {/* Tasks */}
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-muted-foreground">Tasks</h3>
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted-foreground">
+                      {analysis.tasks.length}
+                    </span>
+                  </div>
+                  {analysis.tasks.length > 0 ? (
+                    <div className="space-y-2">
+                      {analysis.tasks.map((task, index) => (
+                        <div
+                          key={task.id}
+                          className={`flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 p-3 ${
+                            task.completed ? 'opacity-60' : ''
+                          }`}
+                        >
+                          <div
+                            className={`mt-0.5 h-4 w-4 shrink-0 rounded border ${
+                              task.completed
+                                ? 'border-green-500 bg-green-500/20'
+                                : 'border-white/20'
+                            }`}
+                          />
+                          <div className="flex-1 space-y-1">
+                            <p className={`text-sm ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
+                              {task.content}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <UrgencyBadge level={task.urgencyLevel} score={task.urgencyScore} size="sm" />
+                              {task.category !== 'other' && (
+                                <span className="rounded-full bg-white/5 px-2 py-0.5 text-xs capitalize text-muted-foreground">
+                                  {task.category}
+                                </span>
+                              )}
+                              {task.deadlineDisplay && (
+                                <span className="text-xs text-muted-foreground">
+                                  Due: {task.deadlineDisplay}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">No tasks extracted</p>
+                  )}
+                </div>
+
+                {/* Decisions */}
+                {analysis.decisions.length > 0 && (
+                  <div>
+                    <div className="mb-3 flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-muted-foreground">Decisions</h3>
+                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted-foreground">
+                        {analysis.decisions.length}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {analysis.decisions.map((decision) => (
+                        <div
+                          key={decision.id}
+                          className="rounded-lg border border-white/10 bg-white/5 p-3"
+                        >
+                          <p className="text-sm">{decision.content}</p>
+                          {decision.stakeholders && (
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              Stakeholders: {decision.stakeholders}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Confusion Items */}
+                {analysis.confusionItems.length > 0 && (
+                  <div>
+                    <div className="mb-3 flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-muted-foreground">Needs Clarification</h3>
+                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted-foreground">
+                        {analysis.confusionItems.length}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {analysis.confusionItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3"
+                        >
+                          <p className="text-sm">{item.item}</p>
+                          {item.suggestion && (
+                            <p className="mt-1 text-xs text-amber-200/70">
+                              Suggestion: {item.suggestion}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Language */}
+                <div className="flex items-center gap-2 border-t border-white/10 pt-4">
+                  <span className="text-xs text-muted-foreground">Language:</span>
+                  <span className="text-xs capitalize">{analysis.language === 'fil' ? 'Filipino' : 'English'}</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        );
+      })()}
+
+      {/* Clear All Confirmation Dialog */}
+      {showClearConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="max-h-[90vh] w-full max-w-3xl overflow-auto rounded-xl border border-white/10 bg-background p-6"
+            className="w-full max-w-md rounded-xl border border-white/10 bg-background p-6"
           >
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold">Analysis Details</h2>
-              <button
-                onClick={() => setSelectedAnalysis(null)}
-                className="rounded p-1.5 text-muted-foreground hover:bg-white/10"
-              >
-                <X className="h-5 w-5" />
-              </button>
+            <div className="flex items-center gap-3 text-red-400">
+              <AlertTriangle className="h-5 w-5" />
+              <h2 className="text-lg font-semibold">Clear All Analyses</h2>
             </div>
-            {/* Full analysis content would go here */}
-            <p className="text-sm text-muted-foreground">
-              Full analysis view - implement as needed
+            <p className="mt-4 text-sm text-muted-foreground">
+              Are you sure you want to delete all {analyses.length} analyses? This action cannot be undone.
             </p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowClearConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => {
+                  clearAllAnalyses();
+                  setShowClearConfirm(false);
+                }}
+              >
+                Delete All
+              </Button>
+            </div>
           </motion.div>
         </div>
       )}

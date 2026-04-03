@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, Upload, History, LayoutDashboard, Moon, Sun, Menu, X } from 'lucide-react';
+import { Sparkles, Upload, History, LayoutDashboard, Moon, Sun, Menu, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -35,6 +35,7 @@ function LayoutUI({
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { href: '/upload', icon: Upload, label: 'Upload' },
     { href: '/history', icon: History, label: 'History' },
+    { href: '/settings', icon: Settings, label: 'Settings' },
   ];
 
   return (
@@ -59,6 +60,12 @@ function LayoutUI({
           </div>
 
           <div className="flex items-center gap-2">
+            <Link
+              href="/settings"
+              className="rounded-lg p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+            >
+              <Settings className="h-5 w-5" />
+            </Link>
             <button
               onClick={toggleDarkMode}
               className="rounded-lg p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground"

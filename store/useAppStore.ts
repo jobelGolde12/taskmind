@@ -1,5 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import {
+  saveAnalysis as idbSaveAnalysis,
+  deleteAnalysis as idbDeleteAnalysis,
+  clearAllAnalyses as idbClearAllAnalyses,
+} from '@/lib/indexed-db';
 
 export interface Task {
   id: string;
@@ -48,10 +53,12 @@ interface AppState {
   
   // History
   analyses: Analysis[];
+  isHydrated: boolean;
   
   // UI State
   darkMode: boolean;
   sidebarOpen: boolean;
+  selectedModel: string;
   
   // Filters
   filterUrgency: string | null;
@@ -62,8 +69,10 @@ interface AppState {
   setCurrentAnalysis: (analysis: Analysis | null) => void;
   setIsAnalyzing: (isAnalyzing: boolean) => void;
   setAnalysisProgress: (progress: InitProgress | null) => void;
-  addAnalysis: (analysis: Analysis) => void;
-  deleteAnalysis: (id: string) => void;
+  addAnalysis: (analysis: Analysis) => Promise<void>;
+  deleteAnalysis: (id: string) => Promise<void>;
+  clearAllAnalyses: () => Promise<void>;
+  setIsHydrated: (hydrated: boolean) => void;
   updateTask: (taskId: string, updates: Partial<Task>) => void;
   toggleTaskCompletion: (taskId: string) => void;
   deleteTask: (taskId: string) => void;
@@ -72,6 +81,7 @@ interface AppState {
   setFilterUrgency: (urgency: string | null) => void;
   setFilterCategory: (category: string | null) => void;
   setSearchQuery: (query: string) => void;
+  setSelectedModel: (model: string) => void;
   clearFilters: () => void;
 }
 
@@ -85,8 +95,10 @@ export const useAppStore = create<AppState>()(
       isAnalyzing: false,
       analysisProgress: null,
       analyses: [],
+      isHydrated: false,
       darkMode: true,
       sidebarOpen: true,
+      selectedModel: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
       filterUrgency: null,
       filterCategory: null,
       searchQuery: '',
@@ -98,19 +110,33 @@ export const useAppStore = create<AppState>()(
       
       setAnalysisProgress: (progress) => set({ analysisProgress: progress }),
       
-      addAnalysis: (analysis) => {
+      addAnalysis: async (analysis) => {
         const newAnalysis = { ...analysis, id: generateId(), createdAt: new Date().toISOString() };
+        
         set((state) => ({
           currentAnalysis: newAnalysis,
           analyses: [newAnalysis, ...state.analyses],
         }));
+        
+        await idbSaveAnalysis(newAnalysis);
       },
       
-      deleteAnalysis: (id) => {
+      deleteAnalysis: async (id) => {
         set((state) => ({
           analyses: state.analyses.filter((a) => a.id !== id),
           currentAnalysis: state.currentAnalysis?.id === id ? null : state.currentAnalysis,
         }));
+        
+        await idbDeleteAnalysis(id);
+      },
+      
+      clearAllAnalyses: async () => {
+        set({
+          analyses: [],
+          currentAnalysis: null,
+        });
+        
+        await idbClearAllAnalyses();
       },
       
       updateTask: (taskId, updates) => {
@@ -160,14 +186,21 @@ export const useAppStore = create<AppState>()(
       
       setSearchQuery: (query) => set({ searchQuery: query }),
       
+      setSelectedModel: (model) => set({ selectedModel: model }),
+      
       clearFilters: () => set({ filterUrgency: null, filterCategory: null, searchQuery: '' }),
+      
+      setIsHydrated: (hydrated) => set({ isHydrated: hydrated }),
     }),
     {
       name: 'taskmind-storage',
       partialize: (state) => ({
-        analyses: state.analyses,
         darkMode: state.darkMode,
+        selectedModel: state.selectedModel,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setIsHydrated(true);
+      },
     }
   )
 );
