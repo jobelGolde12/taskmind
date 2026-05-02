@@ -17,7 +17,7 @@ export default function HomePage() {
     <div className="min-h-screen w-full gradient-bg">
       <Navbar />
 
-      <main className="w-full pt-12">
+      <main className="w-full pt-4">
         <section className="px-4 md:px-10 mb-12">
           <Hero />
         </section>
