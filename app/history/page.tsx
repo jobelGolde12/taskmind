@@ -215,8 +215,8 @@ export default function HistoryPage() {
                     <div className="mb-4 space-y-2">
                       <p className="text-xs font-medium text-muted-foreground">Tasks Preview:</p>
                       <div className="space-y-1">
-                        {analysis.tasks.slice(0, 3).map((task, index) => (
-                          <div key={index} className="flex items-center gap-2 text-sm">
+                        {analysis.tasks.slice(0, 3).map((task) => (
+                          <div key={task.id} className="flex items-center gap-2 text-sm">
                             <div
                               className={`h-2 w-2 rounded-full ${
                                 task.completed ? 'bg-green-500' : 'bg-muted-foreground'
@@ -344,7 +344,7 @@ export default function HistoryPage() {
                   </div>
                   {analysis.tasks.length > 0 ? (
                     <div className="space-y-2">
-                      {analysis.tasks.map((task, index) => (
+                      {analysis.tasks.map((task) => (
                         <div
                           key={task.id}
                           className={`flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 p-3 ${

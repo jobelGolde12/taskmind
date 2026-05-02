@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Send, Loader2, Eraser } from 'lucide-react';
+import { Send, Loader2, Eraser } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ActionList } from '@/components/analysis/ActionList';
 import { ConfusionList } from '@/components/analysis/ConfusionBox';
 import { UrgencyBadge, UrgencyMeter } from '@/components/analysis/UrgencyBadge';
-import { DeadlineCard } from '@/components/analysis/DeadlineCard';
 import { useAppStore } from '@/store/useAppStore';
 import { aiEngine } from '@/lib/ai-engine';
 import { cleanText } from '@/utils/textCleaner';
@@ -19,7 +18,7 @@ export default function AnalyzePage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { addAnalysis, setCurrentAnalysis, setAnalysisProgress } = useAppStore();
+  const { addAnalysis, setAnalysisProgress } = useAppStore();
 
   const handleAnalyze = async () => {
     if (!inputText.trim()) {
@@ -287,7 +286,7 @@ export default function AnalyzePage() {
                 <CardDescription>Key decisions identified</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {currentAnalysis.decisions.map((decision, index) => (
+                {currentAnalysis.decisions.map((decision) => (
                   <div
                     key={decision.id}
                     className="rounded-lg border border-white/10 bg-white/5 p-4"

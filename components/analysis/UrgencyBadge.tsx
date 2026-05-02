@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Flame, AlertTriangle, AlertCircle, Info } from 'lucide-react';
+import { Flame, AlertTriangle, AlertCircle, Info, LucideIcon } from 'lucide-react';
 
 type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';
 
@@ -12,7 +12,7 @@ interface UrgencyBadgeProps {
   showLabel?: boolean;
 }
 
-const urgencyConfig: Record<UrgencyLevel, { color: string; icon: any; label: string }> = {
+const urgencyConfig: Record<UrgencyLevel, { color: string; icon: LucideIcon; label: string }> = {
   low: {
     color: 'from-blue-500/20 to-blue-600/10 border-blue-500/30 text-blue-300',
     icon: Info,

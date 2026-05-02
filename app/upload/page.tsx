@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Upload as UploadIcon, FileText, X, Loader2, CheckCircle2 } from 'lucide-react';
+import { Upload as UploadIcon, FileText, X, Loader2, CheckCircle2, LucideIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -70,6 +70,7 @@ export default function UploadPage() {
       setTextContent(text);
       setSuccess(false);
     } catch (err) {
+      console.error('File read error:', err);
       setError('Failed to read file. Please try again.');
     } finally {
       setIsUploading(false);
@@ -310,7 +311,7 @@ export default function UploadPage() {
 }
 
 interface FeatureCardProps {
-  icon: any;
+  icon: LucideIcon;
   title: string;
   description: string;
 }

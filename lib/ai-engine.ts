@@ -139,14 +139,14 @@ class AIEngine {
     }
   }
 
-  private normalizeTask(task: any): Task {
+  private normalizeTask(task: Record<string, unknown>): Task {
     return {
-      content: task.content || 'Unnamed task',
-      urgencyLevel: this.validateUrgencyLevel(task.urgencyLevel),
-      urgencyScore: this.clampUrgencyScore(task.urgencyScore),
-      deadline: task.deadline || null,
-      deadlineDisplay: task.deadlineDisplay || null,
-      category: this.validateCategory(task.category),
+      content: (task.content as string) || 'Unnamed task',
+      urgencyLevel: this.validateUrgencyLevel(task.urgencyLevel as string),
+      urgencyScore: this.clampUrgencyScore(task.urgencyScore as number),
+      deadline: (task.deadline as string) || null,
+      deadlineDisplay: (task.deadlineDisplay as string) || null,
+      category: this.validateCategory(task.category as string),
     };
   }
 
@@ -177,7 +177,7 @@ class AIEngine {
     }
 
     const response = await this.engine.chat.completions.create({
-      messages: messages as any,
+      messages: messages as webllm.ChatCompletionMessageParam[],
       temperature: 0.7,
       max_tokens: 1024,
     });

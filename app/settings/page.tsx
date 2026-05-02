@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Settings as SettingsIcon, Moon, Sun, Database, Trash2, Download, Info } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/useAppStore';
-import { clearAllAnalyses as idbClearAll, getAnalysesCount } from '@/lib/indexed-db';
+import { clearAllAnalyses as idbClearAll } from '@/lib/indexed-db';
 
 const AI_MODELS = [
   { id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC', name: 'Llama 3.2 1B', description: 'Fast, lightweight', recommended: true },

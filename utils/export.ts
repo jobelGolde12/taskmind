@@ -179,6 +179,8 @@ export function exportToPDF(data: ExportData, filename?: string): void {
       task.deadlineDisplay || 'No deadline',
     ]);
     
+    // @ts-expect-error - jspdf-autotable extends jsPDF but types are tricky
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (doc as any).autoTable({
       startY: y,
       head: [['Task', 'Status', 'Priority', 'Deadline']],
@@ -194,6 +196,8 @@ export function exportToPDF(data: ExportData, filename?: string): void {
       },
     });
     
+    // @ts-expect-error - lastAutoTable is added by jspdf-autotable
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     y = (doc as any).lastAutoTable.finalY + 10;
   }
   

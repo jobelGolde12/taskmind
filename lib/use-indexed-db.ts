@@ -6,7 +6,7 @@ import { getAllAnalyses, saveAnalysis, deleteAnalysis, clearAllAnalyses as idbCl
 import { Analysis } from '@/store/useAppStore';
 
 export function useIndexedDB() {
-  const { analyses, setCurrentAnalysis, isHydrated, setIsHydrated } = useAppStore();
+  const { analyses, isHydrated, setIsHydrated } = useAppStore();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

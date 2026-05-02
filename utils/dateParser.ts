@@ -3,7 +3,7 @@
  * Converts natural language time expressions to specific dates
  */
 
-import { format, isWeekend, addDays, startOfMonth } from 'date-fns';
+import { format, addDays, startOfMonth } from 'date-fns';
 
 export interface ParsedDate {
   original: string;

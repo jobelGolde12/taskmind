@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Timer } from 'lucide-react';
-import { format, isPast, isToday, isTomorrow, differenceInDays } from 'date-fns';
+import { format, isPast, isToday, differenceInDays } from 'date-fns';
 
 interface DeadlineCardProps {
   deadline: string | null;
@@ -23,7 +23,6 @@ export function DeadlineCard({ deadline, deadlineDisplay, compact = false }: Dea
   const deadlineDate = deadline ? new Date(deadline) : null;
   const isOverdue = deadlineDate && isPast(deadlineDate) && !isToday(deadlineDate);
   const isDueToday = deadlineDate && isToday(deadlineDate);
-  const isDueTomorrow = deadlineDate && isTomorrow(deadlineDate);
   const daysUntil = deadlineDate ? differenceInDays(deadlineDate, new Date()) : null;
 
   const displayText = deadlineDisplay || (deadlineDate ? format(deadlineDate, 'MMM d, yyyy h:mm a') : '');

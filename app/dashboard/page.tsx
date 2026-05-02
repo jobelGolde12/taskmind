@@ -1,16 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { CheckCircle2, Circle, Calendar, AlertTriangle, TrendingUp, Clock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ActionList } from '@/components/analysis/ActionList';
 import { UrgencyBadge } from '@/components/analysis/UrgencyBadge';
 import { StatCard, DeadlineStat } from '@/components/ui/stat-card';
 import { useAppStore } from '@/store/useAppStore';
 import { format, isToday, isTomorrow, isThisWeek } from 'date-fns';
 
 export default function DashboardPage() {
-  const { analyses, currentAnalysis } = useAppStore();
+  const { analyses } = useAppStore();
 
   // Calculate statistics
   const allTasks = analyses.flatMap((a) => a.tasks);
