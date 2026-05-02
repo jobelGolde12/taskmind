@@ -3,51 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 240, 249, 255;
-  --background-end-rgb: 254, 242, 242;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary: #111111;
+  --secondary: #8B5CF6;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --success: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
+  --background: #F5F5F0;
+  --foreground: #111827;
+  --border: #E5E5E0;
+  --foreground-rgb: 17, 24, 39;
+  --background-start-rgb: 245, 245, 240;
+  --background-end-rgb: 245, 245, 240;
 }
 
 html {
   scroll-behavior: smooth;
+  font-size: 14px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'PT Mono', 'Roboto', monospace;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #f0f9ff 0%, #fef2f2 100%);
+  background: var(--surface);
 }
 
 .action-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .pulse-animation {

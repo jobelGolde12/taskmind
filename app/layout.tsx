@@ -1,9 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto, Montserrat, PT_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "./layout-wrapper";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ 
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  variable: "--font-roboto",
+});
+
+const montserrat = Montserrat({ 
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-montserrat",
+});
+
+const ptMono = PT_Mono({ 
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pt-mono",
+});
 
 export const metadata: Metadata = {
   title: "TaskMind AI – Convert Messages, Emails, and Announcements into Actionable Tasks Instantly",
@@ -46,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-full flex flex-col bg-background text-foreground`}>
+      <body className={`${roboto.variable} ${montserrat.variable} ${ptMono.variable} font-sans min-h-full flex flex-col bg-[var(--background)] text-[var(--text)]`}>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

@@ -9,7 +9,7 @@ export default function HomePage() {
   const { currentAnalysis } = useAppStore();
   
   return (
-    <div className="min-h-screen gradient-bg">
+    <div className="min-h-screen w-full gradient-bg">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-4 py-3">
@@ -37,10 +37,10 @@ export default function HomePage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main>
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
-          <div className="text-center mb-10 md:mb-16">
+          <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Turn confusing messages into <span className="text-blue-600">clear actions</span>
             </h1>
@@ -58,7 +58,7 @@ export default function HomePage() {
             </div>
             
             {/* User Flow Visualization */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-10">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Simple 3-Step Process</h3>
               <div className="flex flex-col md:flex-row justify-between items-center">
                 <div className="flex flex-col items-center text-center mb-6 md:mb-0">
@@ -89,7 +89,7 @@ export default function HomePage() {
           </div>
           
           {/* Quick Analyze Section */}
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="p-1 bg-gradient-to-r from-blue-500 to-purple-500" />
             <div className="p-6 md:p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Quick Analyze</h2>
@@ -106,7 +106,7 @@ export default function HomePage() {
           </div>
 
           {/* Features Section */}
-          <div id="features" className="mb-16">
+          <div id="features">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">Unique Features</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -173,7 +173,7 @@ export default function HomePage() {
           </div>
           
           {/* User Types Section */}
-          <div className="mb-16">
+          <div>
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">Who Uses This Tool</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -249,7 +249,7 @@ export default function HomePage() {
           </div>
           
           {/* How It Works */}
-          <div id="how-it-works" className="mb-16">
+          <div id="how-it-works">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">How It Works</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -280,7 +280,7 @@ export default function HomePage() {
           </div>
           
           {/* Final CTA */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 md:p-10 text-center text-white mb-10">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 md:p-10 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">Stop guessing what to do next</h2>
             <p className="text-xl mb-8 opacity-90">Get clear actions from any confusing message in seconds</p>
             <Link

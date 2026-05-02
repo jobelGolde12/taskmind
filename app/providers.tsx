@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { getAllAnalyses } from '@/lib/indexed-db';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const darkMode = useAppStore((state) => state.darkMode);
   const { setIsHydrated } = useAppStore();
   const [isReady, setIsReady] = useState(false);
 
@@ -29,14 +28,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     initializeDB();
   }, [setIsHydrated]);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
 
   if (!isReady) {
     return null;
