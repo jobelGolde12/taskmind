@@ -17,23 +17,23 @@ export default function UserTypeCard({
   items, 
   color, 
   iconColor, 
-  bgColor, 
-  borderColor, 
   checkColor 
 }: UserTypeCardProps) {
   return (
-    <div className={`bg-gradient-to-br ${bgColor} to-white rounded-2xl shadow-lg p-6 border ${borderColor}`}>
-      <div className="flex items-center gap-4 mb-4">
-        <div className={`w-16 h-16 rounded-full ${color} flex items-center justify-center`}>
-          <Icon className={`w-8 h-8 ${iconColor}`} />
+    <div className="cozy-card p-6 interactive-hover flex flex-col h-full">
+      <div className="flex items-center gap-4 mb-6">
+        <div className={`w-14 h-14 rounded-md ${color} flex items-center justify-center border border-black/5 shadow-sm`}>
+          <Icon className={`w-7 h-7 ${iconColor}`} />
         </div>
-        <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+        <h3 className="text-xl font-bold text-foreground font-sans">{title}</h3>
       </div>
-      <ul className="space-y-2">
+      <ul className="space-y-3 flex-1">
         {items.map((item, index) => (
-          <li key={index} className="flex items-center gap-2">
-            <Check className={`w-5 h-5 ${checkColor}`} />
-            <span>{item}</span>
+          <li key={index} className="flex items-start gap-3">
+            <div className={`mt-1 rounded-full p-0.5 bg-success/10`}>
+              <Check className={`w-3.5 h-3.5 text-success`} />
+            </div>
+            <span className="text-muted-foreground text-sm font-normal">{item}</span>
           </li>
         ))}
       </ul>

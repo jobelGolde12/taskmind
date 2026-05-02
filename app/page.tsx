@@ -17,19 +17,34 @@ export default function HomePage() {
     <div className="min-h-screen w-full gradient-bg">
       <Navbar />
 
-      <main>
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center">
-            <Hero />
-            <ProcessFlow />
-          </div>
-          
+      <main className="w-full pt-12">
+        <section className="px-4 md:px-10 mb-12">
+          <Hero />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
+          <ProcessFlow />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
           <QuickAnalyze />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
           <Features />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
           <UserTypes />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
           <HowItWorks />
+        </section>
+        
+        <section className="px-4 md:px-10 mb-12">
           <CallToAction />
-        </div>
+        </section>
       </main>
 
       <Footer />

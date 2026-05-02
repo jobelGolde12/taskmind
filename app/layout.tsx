@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import { Roboto, Montserrat, PT_Mono } from "next/font/google";
+import { Poppins, JetBrains_Mono } from 'next/font/google';
 import "./globals.css";
 import LayoutWrapper from "./layout-wrapper";
 
-const roboto = Roboto({ 
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-  variable: "--font-roboto",
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
 });
 
-const montserrat = Montserrat({ 
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-montserrat",
-});
-
-const ptMono = PT_Mono({ 
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-pt-mono",
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
 });
 
 export const metadata: Metadata = {
@@ -61,8 +54,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={`${roboto.variable} ${montserrat.variable} ${ptMono.variable} font-sans min-h-full flex flex-col bg-[var(--background)] text-[var(--text)]`}>
+    <html lang="en" className={`${poppins.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased min-h-screen flex flex-col bg-background text-foreground">
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

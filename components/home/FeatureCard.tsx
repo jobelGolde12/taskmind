@@ -10,13 +10,13 @@ interface FeatureCardProps {
 
 export default function FeatureCard({ icon: Icon, title, description, color, iconColor }: FeatureCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 action-card sm:flex sm:justify-center sm:items-center">
-      <div className={`w-14 h-14 rounded-xl ${color} flex items-center justify-center mb-4 sm:mb-0 sm:mr-4`}>
+    <div className="cozy-card p-6 interactive-hover flex flex-col md:flex-row md:items-center">
+      <div className={`w-14 h-14 rounded-md ${color} flex items-center justify-center mb-4 md:mb-0 md:mr-5 shrink-0 border border-black/5 shadow-sm`}>
         <Icon className={`w-8 h-8 ${iconColor}`} />
       </div>
       <div>
-        <h3 className="text-xl font-bold text-gray-800 mb-3">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <h3 className="text-lg font-bold text-foreground mb-1 font-sans">{title}</h3>
+        <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
       </div>
     </div>
   );

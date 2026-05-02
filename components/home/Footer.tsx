@@ -2,21 +2,24 @@ import { Zap } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-8">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
+    <footer className="bg-secondary/30 border-t border-border py-16 w-full mt-12">
+      <div className="w-full px-4 md:px-10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <div className="flex items-center space-x-2 mb-4 group">
+              <div className="w-9 h-9 bg-primary rounded-md flex items-center justify-center transition-transform group-hover:rotate-12">
+                <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold">TaskMind AI</span>
+              <span className="text-2xl font-bold tracking-tight text-foreground font-sans">TaskMind AI</span>
             </div>
-            <p className="text-gray-400">Turn messages into actionable tasks.</p>
+            <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
+              Empowering clarity through local, privacy-first AI intelligence. Designed for a cozy, productive experience.
+            </p>
           </div>
           
-          <div className="flex flex-col items-center md:items-end">
-            <p className="text-gray-400">AI-Powered Action Intelligence</p>
+          <div className="flex flex-col items-center md:items-end gap-3">
+            <p className="text-primary font-bold text-lg font-sans">AI-Powered Action Intelligence</p>
+            <p className="text-muted-foreground text-sm font-medium">© 2024 TaskMind AI. All rights reserved.</p>
           </div>
         </div>
       </div>

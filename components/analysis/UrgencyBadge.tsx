@@ -14,22 +14,22 @@ interface UrgencyBadgeProps {
 
 const urgencyConfig: Record<UrgencyLevel, { color: string; icon: LucideIcon; label: string }> = {
   low: {
-    color: 'from-blue-500/20 to-blue-600/10 border-blue-500/30 text-blue-300',
+    color: 'bg-primary/10 border-primary/20 text-primary',
     icon: Info,
     label: 'Low',
   },
   medium: {
-    color: 'from-yellow-500/20 to-yellow-600/10 border-yellow-500/30 text-yellow-300',
+    color: 'bg-warning/10 border-warning/20 text-warning',
     icon: AlertCircle,
     label: 'Medium',
   },
   high: {
-    color: 'from-orange-500/20 to-orange-600/10 border-orange-500/30 text-orange-300',
+    color: 'bg-warning/20 border-warning/30 text-warning',
     icon: AlertTriangle,
     label: 'High',
   },
   critical: {
-    color: 'from-red-500/20 to-red-600/10 border-red-500/30 text-red-300',
+    color: 'bg-danger/10 border-danger/20 text-danger',
     icon: Flame,
     label: 'Critical',
   },
@@ -45,7 +45,7 @@ export function UrgencyBadge({
   const Icon = config.icon;
 
   const sizeClasses = {
-    sm: 'px-2 py-0.5 text-xs',
+    sm: 'px-2 py-0.5 text-[10px]',
     md: 'px-2.5 py-1 text-xs',
     lg: 'px-3 py-1.5 text-sm',
   };
@@ -54,10 +54,10 @@ export function UrgencyBadge({
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className={`inline-flex items-center gap-1.5 rounded-full border backdrop-blur-sm ${config.color} ${sizeClasses[size]}`}
+      className={`inline-flex items-center gap-1.5 rounded-md border font-bold uppercase tracking-wider ${config.color} ${sizeClasses[size]}`}
     >
-      <Icon className="h-3.5 w-3.5" />
-      {showLabel && <span className="font-medium">{config.label}</span>}
+      <Icon className="h-3 w-3" />
+      {showLabel && <span>{config.label}</span>}
       {score !== undefined && size !== 'sm' && (
         <span className="opacity-70">({score})</span>
       )}
@@ -74,10 +74,10 @@ export function UrgencyMeter({ score, showLabel = true }: UrgencyMeterProps) {
   const normalizedScore = Math.max(0, Math.min(100, score));
   
   const getColor = (s: number) => {
-    if (s >= 90) return 'from-red-500 to-red-600';
-    if (s >= 70) return 'from-orange-500 to-orange-600';
-    if (s >= 40) return 'from-yellow-500 to-yellow-600';
-    return 'from-blue-500 to-blue-600';
+    if (s >= 90) return 'bg-danger';
+    if (s >= 70) return 'bg-warning';
+    if (s >= 40) return 'bg-warning/60';
+    return 'bg-primary';
   };
 
   const getLevel = (s: number): UrgencyLevel => {
@@ -88,28 +88,28 @@ export function UrgencyMeter({ score, showLabel = true }: UrgencyMeterProps) {
   };
 
   return (
-    <div className="w-full space-y-1.5">
+    <div className="w-full space-y-2">
       {showLabel && (
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">Urgency</span>
-          <span className="font-medium">{urgencyConfig[getLevel(normalizedScore)].label}</span>
+        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+          <span className="text-muted-foreground">Urgency Level</span>
+          <span className="text-primary">{urgencyConfig[getLevel(normalizedScore)].label}</span>
         </div>
       )}
       
-      <div className="relative h-2 overflow-hidden rounded-full bg-white/5">
+      <div className="relative h-2.5 overflow-hidden rounded-md bg-secondary">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${normalizedScore}%` }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className={`absolute inset-y-0 left-0 bg-gradient-to-r ${getColor(normalizedScore)}`}
+          className={`absolute inset-y-0 left-0 ${getColor(normalizedScore)}`}
         />
       </div>
       
       {showLabel && (
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>0</span>
-          <span>{normalizedScore}</span>
-          <span>100</span>
+        <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+          <span>Min</span>
+          <span>Score: {normalizedScore}</span>
+          <span>Max</span>
         </div>
       )}
     </div>
