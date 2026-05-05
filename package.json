@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.2",
-    "@mlc-ai/web-llm": "^0.2.82",
     "autoprefixer": "^10.4.27",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

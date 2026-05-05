@@ -7,15 +7,8 @@ import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/useAppStore';
 import { clearAllAnalyses as idbClearAll } from '@/lib/indexed-db';
 
-const AI_MODELS = [
-  { id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC', name: 'Llama 3.2 1B', description: 'Fast, lightweight', recommended: true },
-  { id: 'Llama-3.2-3B-Instruct-q4f32_1-MLC', name: 'Llama 3.2 3B', description: 'More accurate, slower' },
-  { id: 'Phi-3-mini-4k-instruct-q4f16_1-MLC', name: 'Phi-3 Mini', description: 'Very fast, less accurate' },
-];
-
 export default function SettingsPage() {
   const { darkMode, toggleDarkMode, analyses } = useAppStore();
-  const [selectedModel, setSelectedModel] = useState('Llama-3.2-1B-Instruct-q4f32_1-MLC');
   const [isClearing, setIsClearing] = useState(false);
 
   const handleClearData = async () => {
@@ -95,46 +88,24 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* AI Model */}
+        {/* AI Provider */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <SettingsIcon className="h-5 w-5" />
-              AI Model
+              AI Provider
             </CardTitle>
-            <CardDescription>Select the local AI model to use</CardDescription>
+            <CardDescription>Server-side analysis provider</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {AI_MODELS.map((model) => (
-              <button
-                key={model.id}
-                onClick={() => setSelectedModel(model.id)}
-                className={`w-full rounded-lg border p-3 text-left transition-colors ${
-                  selectedModel === model.id
-                    ? 'border-blue-500 bg-blue-500/10'
-                    : 'border-white/10 bg-white/5 hover:bg-white/10'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">
-                      {model.name}
-                      {model.recommended && (
-                        <span className="ml-2 rounded bg-blue-500/20 px-1.5 py-0.5 text-xs text-blue-400">
-                          Recommended
-                        </span>
-                      )}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{model.description}</p>
-                  </div>
-                  {selectedModel === model.id && (
-                    <div className="h-4 w-4 rounded-full bg-blue-500" />
-                  )}
-                </div>
-              </button>
-            ))}
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="text-sm font-medium">OpenRouter</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Text analysis is processed server-side through OpenRouter using the app&apos;s configured API key.
+              </p>
+            </div>
             <p className="text-xs text-muted-foreground">
-              Model changes take effect on next reload
+              Your saved analysis history stays in local browser storage, but AI inference no longer runs on-device.
             </p>
           </CardContent>
         </Card>
@@ -200,7 +171,7 @@ export default function SettingsPage() {
               <p className="text-xs text-muted-foreground">Version 1.0.0</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Privacy-first AI task extraction. All processing happens locally in your browser using WebLLM.
+              Task extraction powered by OpenRouter with local history saved in your browser.
             </p>
           </CardContent>
         </Card>

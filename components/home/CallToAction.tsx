@@ -7,7 +7,7 @@ export default function CallToAction() {
       <div className="absolute inset-0 bg-black/5" />
       <div className="relative z-10">
         <h2 className="text-[2.5rem] md:text-[3.5rem] font-bold mb-6 tracking-tight font-sans leading-tight">Stop guessing what to do next</h2>
-        <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-2xl mx-auto font-normal">Get clear actions from any confusing message in seconds with local AI.</p>
+        <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-2xl mx-auto font-normal">Get clear actions from any confusing message in seconds with AI-powered analysis.</p>
         <Link
           href="/analyze"
           className="
@@ -34,7 +34,7 @@ export default function CallToAction() {
 
         <p className="mt-10 opacity-70 flex items-center justify-center gap-2 text-sm font-medium">
           <ShieldCheck className="w-5 h-5" />
-          No login required • Privacy-friendly • Local Processing
+          No login required • Privacy-friendly • Fast Analysis
         </p>
       </div>
     </div>

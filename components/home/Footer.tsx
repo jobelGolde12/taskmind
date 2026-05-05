@@ -34,7 +34,7 @@ export default function Footer() {
             </div>
 
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Empowering clarity through local, privacy-first AI intelligence.
+              Empowering clarity through fast, privacy-conscious AI intelligence.
               Designed for a cozy and productive experience.
             </p>
           </div>

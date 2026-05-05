@@ -10,7 +10,11 @@ import { ActionList } from '@/components/analysis/ActionList';
 import { ConfusionList } from '@/components/analysis/ConfusionBox';
 import { UrgencyBadge, UrgencyMeter } from '@/components/analysis/UrgencyBadge';
 import { useAppStore } from '@/store/useAppStore';
-import { aiEngine } from '@/lib/ai-engine';
+import {
+  analyzeText,
+  getAIEngineErrorMessage,
+  validateAnalysisText,
+} from '@/lib/ai-engine';
 import { cleanText } from '@/utils/textCleaner';
 
 export default function AnalyzePage() {
@@ -18,29 +22,12 @@ export default function AnalyzePage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { addAnalysis, setAnalysisProgress } = useAppStore();
+  const { addAnalysis } = useAppStore();
 
   const handleAnalyze = async () => {
-    if (!inputText.trim()) {
-      setError('Please enter some text to analyze');
-      return;
-    }
-
-    const trimmed = inputText.trim();
-    
-    if (trimmed.length < 10) {
-      setError('Please enter more text (at least 10 characters)');
-      return;
-    }
-
-    if (trimmed.length > 50000) {
-      setError('Text is too long. Please limit to 50,000 characters for optimal performance.');
-      return;
-    }
-
-    const wordCount = trimmed.split(/\s+/).filter(Boolean).length;
-    if (wordCount < 3) {
-      setError('Please enter more meaningful text (at least 3 words)');
+    const initialValidationError = validateAnalysisText(inputText);
+    if (initialValidationError) {
+      setError(initialValidationError);
       return;
     }
 
@@ -50,33 +37,16 @@ export default function AnalyzePage() {
     try {
       // Clean the input text
       const cleaned = cleanText(inputText);
-      
-      if (cleaned.isTooShort || cleaned.cleaned.length < 10) {
-        setError('Please enter more text (at least 10 characters)');
+
+      const cleanedValidationError = validateAnalysisText(cleaned.cleaned);
+      if (cleaned.isTooShort || cleanedValidationError) {
+        setError(cleanedValidationError || 'Please enter more text (at least 10 characters)');
         setIsProcessing(false);
         return;
-      }
-
-      if (cleaned.cleaned.length > 50000) {
-        setError('Text is too long after processing. Please reduce the input.');
-        setIsProcessing(false);
-        return;
-      }
-
-      // Initialize AI engine if not already done
-      if (!aiEngine.isReady()) {
-        await aiEngine.initialize({
-          initProgressCallback: (progress) => {
-            setAnalysisProgress({
-              progress: progress.progress,
-              text: progress.text,
-            });
-          },
-        });
       }
 
       // Analyze the text
-      const result = await aiEngine.analyze(cleaned.cleaned);
+      const result = await analyzeText(cleaned.cleaned);
       
       // Convert tasks to include IDs
       const tasksWithIds = result.tasks.map((task, index) => ({
@@ -110,10 +80,9 @@ export default function AnalyzePage() {
       setInputText('');
     } catch (err) {
       console.error('Analysis failed:', err);
-      setError(err instanceof Error ? err.message : 'Failed to analyze text. Please try again.');
+      setError(getAIEngineErrorMessage(err));
     } finally {
       setIsProcessing(false);
-      setAnalysisProgress(null);
     }
   };
 
@@ -191,25 +160,6 @@ export default function AnalyzePage() {
             </Button>
           </div>
 
-          {/* Loading Progress */}
-          {isProcessing && useAppStore.getState().analysisProgress && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-2"
-            >
-              <div className="text-xs text-muted-foreground">
-                {useAppStore.getState().analysisProgress?.text}
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-white/5">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(useAppStore.getState().analysisProgress?.progress || 0) * 100}%` }}
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-600"
-                />
-              </div>
-            </motion.div>
-          )}
         </CardContent>
       </Card>
 

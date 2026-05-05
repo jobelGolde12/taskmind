@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "TaskMind AI – Convert Messages, Emails, and Announcements into Actionable Tasks Instantly",
-  description: "TaskMind AI is a modern AI-powered web app that converts emails, messages, and announcements into clear action items, deadlines, and priorities using privacy-first browser-based AI.",
+  description: "TaskMind AI is a modern AI-powered web app that converts emails, messages, and announcements into clear action items, deadlines, and priorities through fast server-side analysis.",
   keywords: [
     "AI task extractor",
     "convert message to tasks",

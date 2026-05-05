@@ -40,16 +40,10 @@ export interface Analysis {
   createdAt: string;
 }
 
-interface InitProgress {
-  progress: number;
-  text: string;
-}
-
 interface AppState {
   // Current analysis
   currentAnalysis: Analysis | null;
   isAnalyzing: boolean;
-  analysisProgress: InitProgress | null;
   
   // History
   analyses: Analysis[];
@@ -58,7 +52,6 @@ interface AppState {
   // UI State
   darkMode: boolean;
   sidebarOpen: boolean;
-  selectedModel: string;
   
   // Filters
   filterUrgency: string | null;
@@ -68,7 +61,6 @@ interface AppState {
   // Actions
   setCurrentAnalysis: (analysis: Analysis | null) => void;
   setIsAnalyzing: (isAnalyzing: boolean) => void;
-  setAnalysisProgress: (progress: InitProgress | null) => void;
   addAnalysis: (analysis: Analysis) => Promise<void>;
   deleteAnalysis: (id: string) => Promise<void>;
   clearAllAnalyses: () => Promise<void>;
@@ -81,7 +73,6 @@ interface AppState {
   setFilterUrgency: (urgency: string | null) => void;
   setFilterCategory: (category: string | null) => void;
   setSearchQuery: (query: string) => void;
-  setSelectedModel: (model: string) => void;
   clearFilters: () => void;
 }
 
@@ -93,12 +84,10 @@ export const useAppStore = create<AppState>()(
       // Initial state
       currentAnalysis: null,
       isAnalyzing: false,
-      analysisProgress: null,
       analyses: [],
       isHydrated: false,
       darkMode: true,
       sidebarOpen: true,
-      selectedModel: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
       filterUrgency: null,
       filterCategory: null,
       searchQuery: '',
@@ -107,8 +96,6 @@ export const useAppStore = create<AppState>()(
       setCurrentAnalysis: (analysis) => set({ currentAnalysis: analysis }),
       
       setIsAnalyzing: (isAnalyzing) => set({ isAnalyzing }),
-      
-      setAnalysisProgress: (progress) => set({ analysisProgress: progress }),
       
       addAnalysis: async (analysis) => {
         const newAnalysis = { ...analysis, id: generateId(), createdAt: new Date().toISOString() };
@@ -186,8 +173,6 @@ export const useAppStore = create<AppState>()(
       
       setSearchQuery: (query) => set({ searchQuery: query }),
       
-      setSelectedModel: (model) => set({ selectedModel: model }),
-      
       clearFilters: () => set({ filterUrgency: null, filterCategory: null, searchQuery: '' }),
       
       setIsHydrated: (hydrated) => set({ isHydrated: hydrated }),
@@ -196,7 +181,6 @@ export const useAppStore = create<AppState>()(
       name: 'taskmind-storage',
       partialize: (state) => ({
         darkMode: state.darkMode,
-        selectedModel: state.selectedModel,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setIsHydrated(true);

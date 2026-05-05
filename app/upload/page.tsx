@@ -7,7 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useAppStore } from '@/store/useAppStore';
-import { aiEngine } from '@/lib/ai-engine';
+import {
+  analyzeText,
+  getAIEngineErrorMessage,
+  validateAnalysisText,
+} from '@/lib/ai-engine';
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -105,8 +109,9 @@ export default function UploadPage() {
   };
 
   const handleProcess = async () => {
-    if (!textContent.trim()) {
-      setError('No text content to process');
+    const validationError = validateAnalysisText(textContent);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -114,13 +119,8 @@ export default function UploadPage() {
     setError(null);
 
     try {
-      // Initialize AI engine if needed
-      if (!aiEngine.isReady()) {
-        await aiEngine.initialize();
-      }
-
       // Analyze the text
-      const result = await aiEngine.analyze(textContent);
+      const result = await analyzeText(textContent);
 
       // Convert to format with IDs
       const tasksWithIds = result.tasks.map((task, index) => ({
@@ -154,7 +154,7 @@ export default function UploadPage() {
       setSuccess(true);
     } catch (err) {
       console.error('Processing failed:', err);
-      setError(err instanceof Error ? err.message : 'Failed to process file. Please try again.');
+      setError(getAIEngineErrorMessage(err));
     } finally {
       setIsProcessing(false);
     }
@@ -303,7 +303,7 @@ export default function UploadPage() {
         <FeatureCard
           icon={CheckCircle2}
           title="Privacy First"
-          description="All processing happens locally"
+          description="Analysis history stays on this device"
         />
       </div>
     </div>
