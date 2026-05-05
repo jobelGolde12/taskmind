@@ -87,7 +87,7 @@ export const useAppStore = create<AppState>()(
       analyses: [],
       isHydrated: false,
       darkMode: true,
-      sidebarOpen: true,
+      sidebarOpen: false,
       filterUrgency: null,
       filterCategory: null,
       searchQuery: '',

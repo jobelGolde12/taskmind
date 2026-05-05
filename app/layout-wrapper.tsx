@@ -41,7 +41,7 @@ function LayoutUI({ children }: { children: React.ReactNode }) {
         <aside
           className={cn(
             'fixed top-0 left-0 h-screen w-64 border-r border-border bg-white transition-transform duration-300 z-40',
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
           <div className="flex h-full flex-col">
@@ -94,8 +94,8 @@ function LayoutUI({ children }: { children: React.ReactNode }) {
       {/* RIGHT SIDE (HEADER + CONTENT) */}
       <div
         className={cn(
-          'flex flex-col flex-1 min-w-0',
-          !isHomePage && 'lg:ml-64'
+          'flex flex-col flex-1 min-w-0 transition-[margin] duration-300',
+          !isHomePage && sidebarOpen && 'lg:ml-64'
         )}
       >
         {/* HEADER */}
@@ -104,7 +104,9 @@ function LayoutUI({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-4">
               <button
                 onClick={toggleSidebar}
-                className="rounded-md p-2.5 text-muted-foreground hover:bg-secondary hover:text-primary lg:hidden transition-colors"
+                className="rounded-md p-2.5 text-muted-foreground hover:bg-secondary hover:text-primary transition-colors"
+                aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+                title={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
               >
                 <Menu className="h-5 w-5" />
               </button>

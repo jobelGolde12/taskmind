@@ -1,14 +1,15 @@
 'use client';
 
-import { CheckCircle2, Circle, Calendar, AlertTriangle, TrendingUp, Clock } from 'lucide-react';
+import { CheckCircle2, Circle, Calendar, AlertTriangle, TrendingUp, Clock, Menu } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { UrgencyBadge } from '@/components/analysis/UrgencyBadge';
 import { StatCard, DeadlineStat } from '@/components/ui/stat-card';
 import { useAppStore } from '@/store/useAppStore';
 import { format, isToday, isTomorrow, isThisWeek } from 'date-fns';
+import { Button } from '@/components/ui/button';
 
 export default function DashboardPage() {
-  const { analyses } = useAppStore();
+  const { analyses, toggleSidebar } = useAppStore();
 
   // Calculate statistics
   const allTasks = analyses.flatMap((a) => a.tasks);
@@ -38,9 +39,21 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Overview of your tasks and productivity</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="text-muted-foreground">Overview of your tasks and productivity</p>
+        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleSidebar}
+          aria-label="Toggle sidebar"
+          title="Toggle sidebar"
+          className="shrink-0"
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
       </div>
 
       {/* Stats Grid */}

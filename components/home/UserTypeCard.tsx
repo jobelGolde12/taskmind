@@ -30,8 +30,8 @@ export default function UserTypeCard({
       <ul className="space-y-3 flex-1">
         {items.map((item, index) => (
           <li key={index} className="flex items-start gap-3">
-            <div className={`mt-1 rounded-full p-0.5 bg-success/10`}>
-              <Check className={`w-3.5 h-3.5 text-success`} />
+            <div className={`mt-1 rounded-full p-0.5 ${checkColor}/10`}>
+              <Check className={`w-3.5 h-3.5 ${checkColor}`} />
             </div>
             <span className="text-muted-foreground text-sm font-normal">{item}</span>
           </li>
